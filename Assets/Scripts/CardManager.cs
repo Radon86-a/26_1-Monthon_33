@@ -1,17 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    public GameObject card;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameObject[] card;
+    public void MakeCard(int card_id)
+    {}
+    public List<GameCardData> SortCard(List<GameCardData> list)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        list.Sort((a, b)=> a.card_id.CompareTo(b.card_id));
+        return list;
     }
 }

@@ -1086,6 +1086,7 @@ GameObject:
   - component: {fileID: 985209148}
   - component: {fileID: 985209147}
   - component: {fileID: 985209149}
+  - component: {fileID: 985209150}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1139,6 +1140,19 @@ MonoBehaviour:
   gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
   playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
   turnManager: {fileID: 985209147}
+--- !u!114 &985209150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985209146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840800771677ab4f96060addbefa3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardManager
+  card: []
 --- !u!1 &1147976153
 GameObject:
   m_ObjectHideFlags: 0
