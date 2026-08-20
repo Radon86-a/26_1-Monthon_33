@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GamePlayerData", menuName = "Scriptable Objects/GamePlayerData")]
 public class GamePlayerData : ScriptableObject
 {
-    public List<GameCardData> hunds = new List<GameCardData>();
+    public int player_id;
+    public List<GameCardData> hunds;
     public List<GameCardData> game_deck;
     public List<GameCardData> trush;
 }
