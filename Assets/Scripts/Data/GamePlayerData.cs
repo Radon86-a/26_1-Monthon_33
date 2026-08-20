@@ -6,12 +6,6 @@ public class GamePlayerData : ScriptableObject
 {
     public List<GameCardData> hunds = new List<GameCardData>();
     public List<GameCardData> game_deck;
-    [SerializeField] private int _deck_num;
-    public int deck_num
-    {
-        get => _deck_num;
-        set { _deck_num = value; }
-    }
     public List<GameCardData> trush;
 }
 

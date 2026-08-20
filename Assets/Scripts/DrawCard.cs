@@ -6,9 +6,12 @@ public class DrawCard : MonoBehaviour
     public int rnd;
     public void Draw()
     {
-        if(gamePlayerData.deck_num > 0)
+        if(gamePlayerData.game_deck.Count > 0)
         {
-            gamePlayerData.hunds.Add(new GameCardData{card_id = 1, is_used = false});
+            // game_deckの０番目の要素をhundに加え、game_deckから削除する
+            gamePlayerData.hunds.Add
+            (new GameCardData{card_id = gamePlayerData.game_deck[0].card_id, is_used = false, is_selected = false});
+            gamePlayerData.game_deck.RemoveAt(0);
         }
         else
         {
