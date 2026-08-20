@@ -5,4 +5,5 @@ using System;
 public class GameData : ScriptableObject
 {
     public int turn_player_id;
+    public bool is_player_turn;
 }
