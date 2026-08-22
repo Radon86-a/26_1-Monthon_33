@@ -6,6 +6,7 @@ public class Card : MonoBehaviour
 {
     public DrawCard drawCard;
     public GamePlayerData gamePlayerData;
+    public int card_id;
     public void DrawToHund(int num)
     {
         for(int i = 0; i < num; i++)
