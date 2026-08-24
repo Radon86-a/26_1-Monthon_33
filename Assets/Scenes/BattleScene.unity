@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
   gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
-  gamePlayerData: {fileID: 0}
+  gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
   rnd: 0
 --- !u!4 &985209148
 Transform:
