@@ -5,7 +5,7 @@ public class TurnManager : MonoBehaviour
 {
     public GameData gameData;
     public GamePlayerData gamePlayerData;
-    public int rnd;
+    [SerializeField] private int rnd;
     void Start()
     {
         DecideTurn();
