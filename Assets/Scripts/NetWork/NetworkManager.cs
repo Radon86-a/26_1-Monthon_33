@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NativeWebSocket;
 
@@ -5,16 +6,17 @@ public class NetworkManager : MonoBehaviour
 {
     private WebSocket websocket;
 
+    public string MyPlayerId { get; private set; }
+    public string RoomId { get; private set; }
+    public bool IsFirstPlayer { get; private set; }
+
     async void Start()
     {
-        // GoサーバーのWebSocketエンドポイントへ接続
         websocket = new WebSocket("ws://localhost:8080/ws");
 
         websocket.OnOpen += () =>
         {
-            Debug.Log("[Network] Connection open!");
-            // 接続成功したらテストメッセージを送信
-            SendTestMessage();
+            Debug.Log("[Network] Connected to matching server!");
         };
 
         websocket.OnError += (e) =>
@@ -24,33 +26,48 @@ public class NetworkManager : MonoBehaviour
 
         websocket.OnClose += (e) =>
         {
-            Debug.Log("[Network] Connection closed!");
+            Debug.Log("[Network] Connection closed");
         };
 
-        // サーバーからデータを受信したときの処理
         websocket.OnMessage += (bytes) =>
         {
-            string message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("[Network] Received from server: " + message);
+            string json = System.Text.Encoding.UTF8.GetString(bytes);
+            Debug.Log("[Network] Raw JSON: " + json);
+            HandleServerMessage(json);
         };
 
-        // 接続処理を開始
         await websocket.Connect();
     }
 
     void Update()
     {
         #if !UNITY_WEBGL || UNITY_EDITOR
-            // 受信キューを毎フレーム処理する
             websocket?.DispatchMessageQueue();
         #endif
     }
 
-    private async void SendTestMessage()
+    private void HandleServerMessage(string json)
     {
-        if (websocket.State == WebSocketState.Open)
+        MatchData data = JsonUtility.FromJson<MatchData>(json);
+
+        switch (data.type)
         {
-            await websocket.SendText("Hello from Unity!");
+            case "waiting":
+                Debug.Log($"<color=yellow>[Status]</color> {data.message}");
+                break;
+
+            case "match_found":
+                MyPlayerId = data.player_id;
+                RoomId = data.room_id;
+                IsFirstPlayer = data.is_first;
+
+                string turnStr = IsFirstPlayer ? "先行 (First)" : "後攻 (Second)";
+                Debug.Log($"<color=green>[Match Found!]</color> Room: {RoomId} | You: {MyPlayerId} | Opponent: {data.opponent_id} | Turn: {turnStr}");
+                break;
+
+            case "opponent_disconnected":
+                Debug.LogWarning($"<color=red>[Warning]</color> {data.message}");
+                break;
         }
     }
 
@@ -61,4 +78,16 @@ public class NetworkManager : MonoBehaviour
             await websocket.Close();
         }
     }
+}
+
+// サーバーから受信するメッセージ用クラス
+[Serializable]
+public class MatchData
+{
+    public string type;
+    public string room_id;
+    public string player_id;
+    public bool is_first;
+    public string opponent_id;
+    public string message;
 }
