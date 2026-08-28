@@ -1,56 +1,102 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using NativeWebSocket;
 
 public class NetworkManager : MonoBehaviour
 {
+    public static NetworkManager Instance { get; private set; }
+
     private WebSocket websocket;
 
-    async void Start()
+    public string MyPlayerId { get; private set; }
+    public string RoomId { get; private set; }
+    public bool IsFirstPlayer { get; private set; }
+    public bool IsConnected => websocket != null && websocket.State == WebSocketState.Open;
+
+    // イベント通知（UI側で購読可能にする）
+    public event Action OnConnected;
+    public event Action<string> OnWaiting;
+    public event Action<NetworkPayload> OnMatchFound;
+
+    private void Awake()
     {
-        // GoサーバーのWebSocketエンドポイントへ接続
-        websocket = new WebSocket("ws://localhost:8080/ws");
-
-        websocket.OnOpen += () =>
+        if (Instance == null)
         {
-            Debug.Log("[Network] Connection open!");
-            // 接続成功したらテストメッセージを送信
-            SendTestMessage();
-        };
-
-        websocket.OnError += (e) =>
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
-            Debug.LogError("[Network] Error: " + e);
-        };
+            Destroy(gameObject);
+        }
+    }
 
-        websocket.OnClose += (e) =>
-        {
-            Debug.Log("[Network] Connection closed!");
-        };
+    // サーバーへの接続を行うメソッド
+    public async Task ConnectToServer(string serverUrl = "ws://localhost:8080/ws")
+    {
+        if (IsConnected) return;
 
-        // サーバーからデータを受信したときの処理
+        websocket = new WebSocket(serverUrl);
+
+        websocket.OnOpen += () => Debug.Log("[Network] Socket Opened");
+        websocket.OnError += (e) => Debug.LogError("[Network] Error: " + e);
+        websocket.OnClose += (e) => Debug.Log("[Network] Socket Closed");
+
         websocket.OnMessage += (bytes) =>
         {
-            string message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("[Network] Received from server: " + message);
+            string json = System.Text.Encoding.UTF8.GetString(bytes);
+            HandleServerMessage(json);
         };
 
-        // 接続処理を開始
         await websocket.Connect();
+    }
+
+    // マッチング待機列に参加するメソッド
+    public async void StartMatching()
+    {
+        if (!IsConnected)
+        {
+            Debug.LogWarning("[Network] サーバーに未接続です。先に ConnectToServer を呼び出してください。");
+            return;
+        }
+
+        // サーバーへマッチング要求を送信
+        string json = "{\"type\":\"join_match\"}";
+        await websocket.SendText(json);
+        Debug.Log("[Network] Sent: join_match request");
     }
 
     void Update()
     {
         #if !UNITY_WEBGL || UNITY_EDITOR
-            // 受信キューを毎フレーム処理する
             websocket?.DispatchMessageQueue();
         #endif
     }
 
-    private async void SendTestMessage()
+    private void HandleServerMessage(string json)
     {
-        if (websocket.State == WebSocketState.Open)
+        NetworkPayload data = JsonUtility.FromJson<NetworkPayload>(json);
+
+        switch (data.type)
         {
-            await websocket.SendText("Hello from Unity!");
+            case "connected":
+                MyPlayerId = data.player_id;
+                Debug.Log($"<color=cyan>[Connected]</color> Player ID: {MyPlayerId}");
+                OnConnected?.Invoke();
+                break;
+
+            case "waiting":
+                Debug.Log($"<color=yellow>[Status]</color> {data.message}");
+                OnWaiting?.Invoke(data.message);
+                break;
+
+            case "match_found":
+                RoomId = data.room_id;
+                IsFirstPlayer = data.is_first;
+                Debug.Log($"<color=green>[Match Found]</color> Room: {RoomId} | First: {IsFirstPlayer}");
+                OnMatchFound?.Invoke(data);
+                break;
         }
     }
 
@@ -61,4 +107,15 @@ public class NetworkManager : MonoBehaviour
             await websocket.Close();
         }
     }
+}
+
+[Serializable]
+public class NetworkPayload
+{
+    public string type;
+    public string room_id;
+    public string player_id;
+    public bool is_first;
+    public string opponent_id;
+    public string message;
 }

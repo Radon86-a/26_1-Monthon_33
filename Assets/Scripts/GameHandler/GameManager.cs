@@ -1,7 +1,6 @@
 using UnityEngine;
 
-// ターン切り替えの制御をする
-public class TurnManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public GameData gameData;
     public GamePlayerData gamePlayerData;
