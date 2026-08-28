@@ -4,9 +4,12 @@ public class GameManager : MonoBehaviour
 {
     public GameData gameData;
     public GamePlayerData gamePlayerData;
+    public PlayerData playerData;
+    public InitializeGame initializeGame = new InitializeGame();
     [SerializeField] private int rnd;
     void Start()
     {
+        initializeGame.Initialize(gamePlayerData, playerData);
         DecideTurn();
     }
 

@@ -9,7 +9,6 @@ public class NetworkManager : MonoBehaviour
 
     private WebSocket websocket;
 
-    public string MyPlayerId { get; private set; }
     public string RoomId { get; private set; }
     public bool IsFirstPlayer { get; private set; }
     public bool IsConnected => websocket != null && websocket.State == WebSocketState.Open;
@@ -18,6 +17,7 @@ public class NetworkManager : MonoBehaviour
     public event Action OnConnected;
     public event Action<string> OnWaiting;
     public event Action<NetworkPayload> OnMatchFound;
+    public PlayerData playerData;
 
     private void Awake()
     {
@@ -33,22 +33,36 @@ public class NetworkManager : MonoBehaviour
     }
 
     // サーバーへの接続を行うメソッド
-    public async Task ConnectToServer(string serverUrl = "ws://localhost:8080/ws")
+    public async void ConnectToServer(string serverUrl = "ws://localhost:8080/ws")
     {
-        if (IsConnected) return;
+        if (websocket != null && websocket.State == WebSocketState.Open) return;
 
         websocket = new WebSocket(serverUrl);
 
-        websocket.OnOpen += () => Debug.Log("[Network] Socket Opened");
-        websocket.OnError += (e) => Debug.LogError("[Network] Error: " + e);
-        websocket.OnClose += (e) => Debug.Log("[Network] Socket Closed");
+        websocket.OnOpen += () =>
+        {
+            Debug.Log("[Network] Socket Opened!");
+        };
+
+        websocket.OnError += (e) =>
+        {
+            Debug.LogError("[Network] Error: " + e);
+        };
+
+        websocket.OnClose += (e) =>
+        {
+            Debug.Log("[Network] Closed: " + e);
+        };
 
         websocket.OnMessage += (bytes) =>
         {
             string json = System.Text.Encoding.UTF8.GetString(bytes);
+            Debug.Log("[Network] Received: " + json);
+            
             HandleServerMessage(json);
         };
 
+        // 接続開始（awaitは内部でのみ実行）
         await websocket.Connect();
     }
 
@@ -81,8 +95,8 @@ public class NetworkManager : MonoBehaviour
         switch (data.type)
         {
             case "connected":
-                MyPlayerId = data.player_id;
-                Debug.Log($"<color=cyan>[Connected]</color> Player ID: {MyPlayerId}");
+                playerData.player_id = data.player_id;
+                Debug.Log($"<color=cyan>[Connected]</color> Player ID: {playerData.player_id}");
                 OnConnected?.Invoke();
                 break;
 

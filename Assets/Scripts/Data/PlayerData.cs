@@ -5,5 +5,6 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     public string player_name;
+    public string player_id;
     public List<GameCardData> deck;
 }

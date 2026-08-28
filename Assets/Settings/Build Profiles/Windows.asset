@@ -20,8 +20,17 @@ MonoBehaviour:
     rid: 4173106843797684297
   m_ActivePlatformGuid: 
   m_AdditionalPlatformBuildSettings: []
-  m_OverrideGlobalSceneList: 0
-  m_Scenes: []
+  m_OverrideGlobalSceneList: 1
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/Scenes/TitleScene.unity
+    m_guid: 57008dbf92c8f944aad953b373ded630
+  - m_enabled: 1
+    m_path: Assets/Scenes/HomeScene.unity
+    m_guid: e71fc3a80f7b44a409e0c671995ed229
+  - m_enabled: 1
+    m_path: Assets/Scenes/BattleScene.unity
+    m_guid: 82df86e5c318fef4e82dbeb174b46d9d
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
@@ -43,7 +52,7 @@ MonoBehaviour:
         m_ExplicitNullChecks: 0
         m_ExplicitDivideByZeroChecks: 0
         m_ExplicitArrayBoundsChecks: 0
-        m_CompressionType: -1
+        m_CompressionType: 0
         m_InstallInBuildFolder: 0
         m_InsightsSettingsContainer:
           m_BuildProfileEngineDiagnosticsState: 2

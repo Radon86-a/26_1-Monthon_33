@@ -1,16 +1,12 @@
-using UnityEngine;
+using System;
 
-public class InitializeGame : MonoBehaviour
+[Serializable]
+public class InitializeGame
 {
-    public GameData gameData;
-    public GamePlayerData gamePlayerData;
-    public PlayerData playerData;
-    public TurnManager turnManager;
-    void Start()
+    public void Initialize(GamePlayerData gamePlayerData, PlayerData playerData)
     {
         gamePlayerData.game_deck = playerData.deck;
         gamePlayerData.hunds.Clear();
         gamePlayerData.trush.Clear();
-        turnManager.DecideTurn();
     }
 }

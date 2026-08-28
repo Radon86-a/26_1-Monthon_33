@@ -738,9 +738,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089c69638a402aa43abf9d820c7ff1b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
-  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
-  gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
-  rnd: 0
 --- !u!114 &747461680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,8 +1082,8 @@ GameObject:
   m_Component:
   - component: {fileID: 985209148}
   - component: {fileID: 985209147}
-  - component: {fileID: 985209149}
   - component: {fileID: 985209150}
+  - component: {fileID: 985209151}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1106,9 +1103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089c69638a402aa43abf9d820c7ff1b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
-  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
-  gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
-  rnd: 0
 --- !u!4 &985209148
 Transform:
   m_ObjectHideFlags: 0
@@ -1124,22 +1118,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &985209149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985209146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 266ae7a2b74dcd44183bafc09b40887a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InitializeGame
-  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
-  gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
-  playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
-  turnManager: {fileID: 985209147}
 --- !u!114 &985209150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,6 +1131,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
   card: []
+--- !u!114 &985209151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985209146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa07a836aa0a58b49802c717f847e88a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
+  gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+  playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
+  rnd: 0
 --- !u!1 &1147976153
 GameObject:
   m_ObjectHideFlags: 0
