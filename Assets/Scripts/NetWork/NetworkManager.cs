@@ -9,7 +9,6 @@ public class NetworkManager : MonoBehaviour
 
     private WebSocket websocket;
 
-    public string MyPlayerId { get; private set; }
     public string RoomId { get; private set; }
     public bool IsFirstPlayer { get; private set; }
     public bool IsConnected => websocket != null && websocket.State == WebSocketState.Open;
@@ -18,6 +17,7 @@ public class NetworkManager : MonoBehaviour
     public event Action OnConnected;
     public event Action<string> OnWaiting;
     public event Action<NetworkPayload> OnMatchFound;
+    public PlayerData playerData;
 
     private void Awake()
     {
@@ -99,8 +99,8 @@ public class NetworkManager : MonoBehaviour
         switch (data.type)
         {
             case "connected":
-                MyPlayerId = data.player_id;
-                Debug.Log($"<color=cyan>[Connected]</color> Player ID: {MyPlayerId}");
+                playerData.player_id = data.player_id;
+                Debug.Log($"<color=cyan>[Connected]</color> Player ID: {playerData.player_id}");
                 OnConnected?.Invoke();
                 break;
 
