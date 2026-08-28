@@ -59,11 +59,7 @@ public class NetworkManager : MonoBehaviour
             string json = System.Text.Encoding.UTF8.GetString(bytes);
             Debug.Log("[Network] Received: " + json);
             
-            // サーバーから "connected" メッセージが来たらイベント発火
-            if (json.Contains("\"connected\""))
-            {
-                OnConnected?.Invoke();
-            }
+            HandleServerMessage(json);
         };
 
         // 接続開始（awaitは内部でのみ実行）

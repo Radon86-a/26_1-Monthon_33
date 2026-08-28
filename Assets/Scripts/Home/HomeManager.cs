@@ -7,27 +7,58 @@ public class HomeManager : MonoBehaviour
     [SerializeField] private Button matchButton;
     [SerializeField] private TextMeshProUGUI statusText;
 
-    async void Start()
+    void Start()
     {
+        // イベント登録
+        NetworkManager.Instance.OnWaiting += HandleWaiting;
+        NetworkManager.Instance.OnMatchFound += HandleMatchFound;
 
-        // 2. イベント購読
-        NetworkManager.Instance.OnWaiting += (msg) =>
+        if (matchButton != null)
         {
-            statusText.text = "対戦相手を探しています...";
-        };
+            matchButton.onClick.AddListener(OnMatchButtonClicked);
+        }
 
-        NetworkManager.Instance.OnMatchFound += (data) =>
+        // ★未接続ならサーバーに接続する
+        if (!NetworkManager.Instance.IsConnected)
         {
-            statusText.text = "対戦相手が見つかりました！戦闘画面へ移行します...";
-            // 3. マッチング成立で戦闘シーンへ移動
-            SceneManager.MoveScene(2);
-        };
+            statusText.text = "connecting...";
+            if (matchButton != null) matchButton.interactable = false;
 
-        // マッチングボタン押下
-        matchButton.onClick.AddListener(() =>
+            NetworkManager.Instance.ConnectToServer();
+
+            statusText.text = "connected! press match";
+            if (matchButton != null) matchButton.interactable = true;
+        }
+    }
+
+    private void OnMatchButtonClicked()
+    {
+        matchButton.interactable = false;
+        statusText.text = "data sending...";
+        NetworkManager.Instance.StartMatching();
+    }
+
+    // 3. サーバーから待機中通知を受信
+    private void HandleWaiting(string msg)
+    {
+        statusText.text = "matching...";
+    }
+
+    // 4. マッチング成立時戦闘シーンへ遷移する
+    private void HandleMatchFound(NetworkPayload data)
+    {
+        statusText.text = "matched!";
+
+        SceneManager.MoveScene(2);
+    }
+
+    private void OnDestroy()
+    {
+        // シーン破棄時にイベント解除（安全策）
+        if (NetworkManager.Instance != null)
         {
-            matchButton.interactable = false;
-            NetworkManager.Instance.StartMatching();
-        });
+            NetworkManager.Instance.OnWaiting -= HandleWaiting;
+            NetworkManager.Instance.OnMatchFound -= HandleMatchFound;
+        }
     }
 }

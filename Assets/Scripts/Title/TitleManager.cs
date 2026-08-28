@@ -34,4 +34,13 @@ public class TitleManager : MonoBehaviour
         // 安全にシーン遷移を実行
         SceneManager.MoveScene(1);
     }
+
+    private void OnDestroy()
+    {
+        // シーン破棄時に登録解除
+        if (NetworkManager.Instance != null)
+        {
+            NetworkManager.Instance.OnConnected -= HandleConnected;
+        }
+    }
 }
