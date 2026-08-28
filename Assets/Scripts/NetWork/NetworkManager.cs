@@ -33,22 +33,40 @@ public class NetworkManager : MonoBehaviour
     }
 
     // サーバーへの接続を行うメソッド
-    public async Task ConnectToServer(string serverUrl = "ws://localhost:8080/ws")
+    public async void ConnectToServer(string serverUrl = "ws://localhost:8080/ws")
     {
-        if (IsConnected) return;
+        if (websocket != null && websocket.State == WebSocketState.Open) return;
 
         websocket = new WebSocket(serverUrl);
 
-        websocket.OnOpen += () => Debug.Log("[Network] Socket Opened");
-        websocket.OnError += (e) => Debug.LogError("[Network] Error: " + e);
-        websocket.OnClose += (e) => Debug.Log("[Network] Socket Closed");
+        websocket.OnOpen += () =>
+        {
+            Debug.Log("[Network] Socket Opened!");
+        };
+
+        websocket.OnError += (e) =>
+        {
+            Debug.LogError("[Network] Error: " + e);
+        };
+
+        websocket.OnClose += (e) =>
+        {
+            Debug.Log("[Network] Closed: " + e);
+        };
 
         websocket.OnMessage += (bytes) =>
         {
             string json = System.Text.Encoding.UTF8.GetString(bytes);
-            HandleServerMessage(json);
+            Debug.Log("[Network] Received: " + json);
+            
+            // サーバーから "connected" メッセージが来たらイベント発火
+            if (json.Contains("\"connected\""))
+            {
+                OnConnected?.Invoke();
+            }
         };
 
+        // 接続開始（awaitは内部でのみ実行）
         await websocket.Connect();
     }
 

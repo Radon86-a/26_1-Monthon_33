@@ -1,17 +1,14 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HomeManager : MonoBehaviour
 {
     [SerializeField] private Button matchButton;
-    [SerializeField] private Text statusText;
+    [SerializeField] private TextMeshProUGUI statusText;
 
     async void Start()
     {
-        // 1. サーバーへ接続
-        statusText.text = "サーバーに接続中...";
-        await NetworkManager.Instance.ConnectToServer();
-        statusText.text = "サーバー接続完了";
 
         // 2. イベント購読
         NetworkManager.Instance.OnWaiting += (msg) =>
@@ -32,14 +29,5 @@ public class HomeManager : MonoBehaviour
             matchButton.interactable = false;
             NetworkManager.Instance.StartMatching();
         });
-    }
-
-    private void OnDestroy()
-    {
-        // シーン破棄時にイベント購読解除（メモリリーク防止）
-        if (NetworkManager.Instance != null)
-        {
-            // 必要に応じてイベント解除を記述
-        }
     }
 }
