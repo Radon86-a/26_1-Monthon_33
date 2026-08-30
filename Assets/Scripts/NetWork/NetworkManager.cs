@@ -114,7 +114,6 @@ public class NetworkManager : MonoBehaviour
             break;
 
         case "game_state":
-            // ★戦闘データの解析とイベント発火を switch 内に統一
             GameData syncData = JsonUtility.FromJson<GameData>(json);
             Debug.Log($"<color=orange>[Battle State]</color> Action: {syncData.action} | Turn: {syncData.current_turn_player_id}");
             OnBattleStateReceived?.Invoke(syncData);
