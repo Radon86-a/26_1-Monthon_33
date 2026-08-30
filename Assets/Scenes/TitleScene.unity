@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkManager
   playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
+  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
 --- !u!4 &108377503
 Transform:
   m_ObjectHideFlags: 0
