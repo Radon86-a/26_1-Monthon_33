@@ -14,8 +14,9 @@ public class Card
 
         if(cardData.is_attackable)
         {
-            // Attack.DoAttack(gameData.current_hp, gameData.atk);
-            // SyncData.SyncMyState("attack");
+            Attack.DoAttack(gameData.current_hp, gameData.atk);
+
+            SyncData.SyncMyState("attack");
         }
         if(cardData.is_drawable)
         {}

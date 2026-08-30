@@ -26,8 +26,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Button attackButton;
 
     // 自分のキャラステータス
-    private SendData sendData;
-    private bool IsMyTurn => sendData.current_turn_player_id == playerData.player_id;
+    
+    private bool IsMyTurn => SyncData.sendData.current_turn_player_id == playerData.player_id;
 
     void Start()
     {
@@ -45,10 +45,9 @@ public class BattleManager : MonoBehaviour
         // 先行プレイヤーが初期ターンプレイヤーになる
         if (NetworkManager.Instance.IsFirstPlayer)
         {
-            sendData.current_turn_player_id = playerData.player_id;
+            SyncData.sendData.current_turn_player_id = playerData.player_id;
             // 初期状態をサーバーへ同期
-            sendData.action = "init";
-            SyncData.SyncMyState(sendData);
+            SyncData.SyncMyState("init");
         }
         
         UpdateUI();
@@ -62,8 +61,7 @@ public class BattleManager : MonoBehaviour
         // クライアント側でカード処理
 
         // 状態をサーバーへ送信して相手画面にも反映
-        sendData.action = "play_card";
-        SyncData.SyncMyState(sendData);
+        SyncData.SyncMyState("play_card");
     }
 
     // ターン終了ボタン
@@ -72,8 +70,7 @@ public class BattleManager : MonoBehaviour
         if (!IsMyTurn) return;
 
         // ターン終了をサーバーへ通知
-        sendData.action = "end_turn";
-        SyncData.SyncMyState(sendData);
+        SyncData.SyncMyState("end_turn");
     }
 
     private void OnAttackClicked()
@@ -81,23 +78,22 @@ public class BattleManager : MonoBehaviour
         if (!IsMyTurn) return;
         Attack.DoAttack(gameData.current_hp, gameData.atk);
 
-        sendData.action = "attack";
-        SyncData.SyncMyState(sendData);
+        SyncData.SyncMyState("attack");
     }
 
     // サーバーからデータを受信したときの処理
     private void HandleBattleState(GameData data)
     {
         // ターン更新
-        sendData.current_turn_player_id = data.current_turn_player_id;
+        SyncData.sendData.current_turn_player_id = data.current_turn_player_id;
 
         if (data.player_id == playerData.player_id)
         {
             // 自分のデータ反映
-            sendData.current_hp = data.current_hp;
-            sendData.max_hp = data.max_hp;
-            sendData.atk = data.atk;
-            sendData.hand_count = data.hand_count;
+            SyncData.sendData.current_hp = data.current_hp;
+            SyncData.sendData.max_hp = data.max_hp;
+            SyncData.sendData.atk = data.atk;
+            SyncData.sendData.hand_count = data.hand_count;
         }
         else
         {
@@ -113,9 +109,9 @@ public class BattleManager : MonoBehaviour
     private void UpdateUI()
     {
         // 自分のUI更新
-        myHpText.text = $"HP: {sendData.current_hp} / {sendData.max_hp}";
-        myAtkText.text = $"ATK: {sendData.atk}";
-        myHandText.text = $"手札: {sendData.hand_count}枚";
+        myHpText.text = $"HP: {SyncData.sendData.current_hp} / {SyncData.sendData.max_hp}";
+        myAtkText.text = $"ATK: {SyncData.sendData.atk}";
+        myHandText.text = $"手札: {SyncData.sendData.hand_count}枚";
 
         // ターン表示とボタンの活性/非活性
         if (IsMyTurn)
@@ -147,13 +143,3 @@ public class BattleManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public struct SendData
-{
-    public string current_turn_player_id;
-    public int current_hp;
-    public int max_hp;
-    public int atk;
-    public int hand_count;
-    public string action;
-}
