@@ -119,6 +119,10 @@ public class NetworkManager : MonoBehaviour
             OnBattleStateReceived?.Invoke(syncData);
             break;
 
+        case "opponent_disconnected":
+            Debug.Log($"<color=red>[Opponent Disconnected]</color>");
+            break;
+
         default:
             Debug.LogWarning($"[Network] 未知のメッセージタイプを受信しました: {data.type}");
             break;
