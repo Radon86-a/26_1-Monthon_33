@@ -17,6 +17,8 @@ public class NetworkManager : MonoBehaviour
     public event Action OnConnected;
     public event Action<string> OnWaiting;
     public event Action<NetworkPayload> OnMatchFound;
+    // キャンセル完了イベント
+    public event Action OnMatchCancelled;
     public PlayerData playerData;
     public GameData gameData;
 
@@ -123,6 +125,11 @@ public class NetworkManager : MonoBehaviour
             Debug.Log($"<color=red>[Opponent Disconnected]</color>");
             break;
 
+        case "match_cancelled":
+                Debug.Log("<color=yellow>[Status]</color> Matchmaking cancelled.");
+                OnMatchCancelled?.Invoke();
+                break;
+
         default:
             Debug.LogWarning($"[Network] 未知のメッセージタイプを受信しました: {data.type}");
             break;
@@ -150,6 +157,16 @@ public class NetworkManager : MonoBehaviour
             string json = JsonUtility.ToJson(data);
             await websocket.SendText(json);
         }
+    }
+
+    // キャンセル要求を送信
+    public async void CancelMatching()
+    {
+        if (!IsConnected) return;
+
+        string json = "{\"type\":\"cancel_match\"}";
+        await websocket.SendText(json);
+        Debug.Log("[Network] Sent: cancel_match");
     }
 }
 
