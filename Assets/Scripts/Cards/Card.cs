@@ -1,12 +1,29 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using UnityEngine;
 
-public class Card : MonoBehaviour
+public class Card
 {
     public DrawCard drawCard;
     public GamePlayerData gamePlayerData;
+    public CardData cardData;
+    public GameData gameData;
     public int card_id;
+
+    public void UseCard(int card_id)
+    {
+
+        if(cardData.is_attackable)
+        {
+            Attack.DoAttack(gameData.current_hp, gameData.atk);
+
+            SyncData.SyncMyState("attack");
+        }
+        if(cardData.is_drawable)
+        {}
+        if(cardData.is_selective_drawable)
+        {}
+    }
+
     public void DrawToHund(int num)
     {
         for(int i = 0; i < num; i++)
@@ -21,17 +38,7 @@ public class Card : MonoBehaviour
             drawCard.Draw(temp);
         }
     }
-    public int Attack(int attack, int hp)
-    {
-        int remain_hp = hp - attack;
-        if(remain_hp > 0)
-        {
-            return remain_hp;
-        }else
-        {
-            return 0;
-        }
-    }
+    
     public int Heal(int heal, int hp, int max_hp)
     {
         int healed_hp = hp + heal;
