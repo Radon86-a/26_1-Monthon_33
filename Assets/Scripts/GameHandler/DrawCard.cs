@@ -9,6 +9,7 @@ public class DrawCard
     public int rnd;
     public void Draw(List<GameCardData> temp)
     {
+        if(temp == null) return;
         if(gamePlayerData.game_deck.Count > 0)
         {
             // game_deckの０番目の要素をtempに加え、game_deckから削除する
@@ -20,6 +21,7 @@ public class DrawCard
         {
             ShuffleDeck();
             Draw(temp);
+            
         }
     }
 

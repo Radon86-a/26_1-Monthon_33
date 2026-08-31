@@ -1333,7 +1333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
   card:
     drawCard:
-      gamePlayerData: {fileID: 0}
+      gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
       rnd: 0
     gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
     cardData:
@@ -1344,6 +1344,7 @@ MonoBehaviour:
       is_drawable: 0
       is_selective_drawable: 0
       is_hand_des: 0
+      is_equipment: 0
       pump_amount: 0
       heal_amount: 0
       draw_num: 0
@@ -1359,7 +1360,14 @@ MonoBehaviour:
       atk: 0
       hand_count: 0
       action: 
+      is_first: 0
+      message: 
+      des_num: 0
+      heal_amount: 0
     card_id: 0
+  drawCard:
+    gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+    rnd: 0
 --- !u!4 &985209148
 Transform:
   m_ObjectHideFlags: 0
@@ -1411,6 +1419,10 @@ MonoBehaviour:
     atk: 0
     hand_count: 0
     action: 
+    is_first: 0
+    message: 
+    des_num: 0
+    heal_amount: 0
   turnManager: {fileID: 985209147}
   myHpText: {fileID: 1149509765}
   myAtkText: {fileID: 1557004122}
