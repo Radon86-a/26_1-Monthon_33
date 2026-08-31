@@ -1331,6 +1331,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089c69638a402aa43abf9d820c7ff1b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  card:
+    drawCard:
+      gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+      rnd: 0
+    gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+    cardData:
+      card_id: 0
+      card_name: 
+      card_image: {fileID: 0}
+      is_attackable: 0
+      is_drawable: 0
+      is_selective_drawable: 0
+      is_hand_des: 0
+      is_equipment: 0
+      pump_amount: 0
+      heal_amount: 0
+      draw_num: 0
+      select_num: 0
+      des_num: 0
+    gameData:
+      type: game_state
+      room_id: 
+      player_id: 
+      current_turn_player_id: 
+      current_hp: 0
+      max_hp: 0
+      atk: 0
+      hand_count: 0
+      action: 
+      is_first: 0
+      message: 
+      des_num: 0
+      heal_amount: 0
+    card_id: 0
+  drawCard:
+    gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+    rnd: 0
 --- !u!4 &985209148
 Transform:
   m_ObjectHideFlags: 0
@@ -1372,7 +1409,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
-  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
+  gameData:
+    type: 2
+    room_id: 
+    player_id: 
+    current_turn_player_id: 
+    current_hp: 0
+    max_hp: 0
+    atk: 0
+    hand_count: 0
+    action: 
+    is_first: 0
+    message: 
+    des_num: 0
+    heal_amount: 0
+  turnManager: {fileID: 985209147}
   myHpText: {fileID: 1149509765}
   myAtkText: {fileID: 1557004122}
   opponentHpText: {fileID: 1423075944}
@@ -1490,8 +1541,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 150}
+  m_SizeDelta: {x: 100, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1066537765
 CanvasRenderer:
@@ -1548,15 +1599,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1

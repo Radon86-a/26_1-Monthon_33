@@ -8,6 +8,7 @@ public class BattleManager : MonoBehaviour
 {
     public PlayerData playerData;
     public GameData gameData;
+    public TurnManager turnManager;
 
     [Header("自分 (Player)")]
     [SerializeField] private TextMeshProUGUI myHpText;
@@ -28,28 +29,36 @@ public class BattleManager : MonoBehaviour
     private bool IsMyTurn => SyncData.sendData.current_turn_player_id == playerData.player_id;
 
     void Start()
+{
+    NetworkManager.Instance.OnBattleStateReceived += HandleBattleState;
+
+    // ボタンのリスナー設定
+    for (int i = 0; i < cardButton.Count; i++)
     {
-        NetworkManager.Instance.OnBattleStateReceived += HandleBattleState;
-
-        // ボタンのリスナー設定
-        for(int i = 0; i < cardButton.Count; i++)
-        {
-            int index = i;
-    cardButton[index].onClick.AddListener(() => OnPlayCardClicked(index));
-        }
-        endTurnButton.onClick.AddListener(OnEndTurnClicked);
-        attackButton.onClick.AddListener(OnAttackClicked);
-
-        // 先行プレイヤーが初期ターンプレイヤーになる
-        if (NetworkManager.Instance.IsFirstPlayer)
-        {
-            SyncData.sendData.current_turn_player_id = playerData.player_id;
-            // 初期状態をサーバーへ同期
-            SyncData.SyncMyState("init");
-        }
-        
-        UpdateUI();
+        int index = i;
+        cardButton[index].onClick.AddListener(() => OnPlayCardClicked(index));
     }
+    endTurnButton.onClick.AddListener(OnEndTurnClicked);
+    attackButton.onClick.AddListener(OnAttackClicked);
+
+    // 1. 自分の基本初期ステータスを sendData に格納
+    SyncData.sendData.current_hp = gameData.current_hp;
+    SyncData.sendData.max_hp = gameData.max_hp;
+    SyncData.sendData.atk = gameData.atk;
+    SyncData.sendData.hand_count = 4; // 初期手札枚数など
+    turnManager.GameStrat();
+
+    // 2. 先行プレイヤーのみ初期ターン保持者を自分に設定する（後攻は相手のIDが入るのを待つ）
+    if (NetworkManager.Instance.IsFirstPlayer)
+    {
+        SyncData.sendData.current_turn_player_id = playerData.player_id;
+    }
+
+    // 3. ★先行・後攻問わず、自分の初期ステータスを相手に送信する
+    SyncData.SyncMyState("init");
+
+    UpdateUI();
+}
 
     // カード使用ボタン（クライアント側で処理して相手に同期）
     private void OnPlayCardClicked(int hund_card_id)
@@ -81,28 +90,38 @@ public class BattleManager : MonoBehaviour
 
     // サーバーからデータを受信したときの処理
     private void HandleBattleState(GameData data)
+{
+    // ターン更新（先行が送信した init、またはターン終了時のデータから反映）
+    if (!string.IsNullOrEmpty(data.current_turn_player_id))
     {
-        // ターン更新
+        string lastTurnId = SyncData.sendData.current_turn_player_id;
         SyncData.sendData.current_turn_player_id = data.current_turn_player_id;
 
-        if (data.player_id == playerData.player_id)
+        if (lastTurnId != data.current_turn_player_id && IsMyTurn)
         {
-            // 自分のデータ反映
-            SyncData.sendData.current_hp = data.current_hp;
-            SyncData.sendData.max_hp = data.max_hp;
-            SyncData.sendData.atk = data.atk;
-            SyncData.sendData.hand_count = data.hand_count;
+            turnManager.StartTurn();
         }
-        else
-        {
-            // 相手のデータ反映
-            opponentHpText.text = $"HP: {data.current_hp} / {data.max_hp}";
-            opponentAtkText.text = $"ATK: {data.atk}";
-            Debug.Log($"手札: {data.hand_count}枚");
-        }
-
-        UpdateUI();
     }
+
+    // データ反映
+    if (data.player_id == playerData.player_id)
+    {
+        // 自分の確定値
+        SyncData.sendData.current_hp = data.current_hp;
+        SyncData.sendData.max_hp = data.max_hp;
+        SyncData.sendData.atk = data.atk;
+        SyncData.sendData.hand_count = data.hand_count;
+    }
+    else
+    {
+        // ★相手の初期データ（init）や最新データが届いたら相手UIを更新
+        opponentHpText.text = $"HP: {data.current_hp} / {data.max_hp}";
+        opponentAtkText.text = $"ATK: {data.atk}";
+        // 相手の手札枚数UIなどがあればここで更新
+    }
+
+    UpdateUI();
+}
 
     private void UpdateUI()
     {

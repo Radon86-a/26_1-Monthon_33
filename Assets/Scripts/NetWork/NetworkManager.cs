@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviour
     // イベント通知（UI側で購読可能にする）
     public event Action OnConnected;
     public event Action<string> OnWaiting;
-    public event Action<NetworkPayload> OnMatchFound;
+    public event Action<GameData> OnMatchFound;
     // キャンセル完了イベント
     public event Action OnMatchCancelled;
     public PlayerData playerData;
@@ -93,7 +93,7 @@ public class NetworkManager : MonoBehaviour
 
     private void HandleServerMessage(string json)
     {
-        NetworkPayload data = JsonUtility.FromJson<NetworkPayload>(json);
+        GameData data = JsonUtility.FromJson<GameData>(json);
 
         switch (data.type)
     {
@@ -168,15 +168,4 @@ public class NetworkManager : MonoBehaviour
         await websocket.SendText(json);
         Debug.Log("[Network] Sent: cancel_match");
     }
-}
-
-[Serializable]
-public class NetworkPayload
-{
-    public string type;
-    public string room_id;
-    public string player_id;
-    public bool is_first;
-    public string opponent_id;
-    public string message;
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using System;
 
+[Serializable]
 public class Card
 {
     public DrawCard drawCard;

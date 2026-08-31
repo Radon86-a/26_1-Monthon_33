@@ -1,9 +1,10 @@
 using System;
 
+// バックエンドに送る用のデータ
 [Serializable]
 public class GameData
 {
-    public string type = "game_state";
+    public string type;
     public string room_id;
     public string player_id;
     public string current_turn_player_id;
@@ -12,4 +13,8 @@ public class GameData
     public int atk;
     public int hand_count;
     public string action;
+    public bool is_first;
+    public string message;
+    public int des_num;
+    public int heal_amount;
 }
