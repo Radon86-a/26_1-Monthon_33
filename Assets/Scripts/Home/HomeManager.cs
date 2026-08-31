@@ -83,7 +83,7 @@ public class HomeManager : MonoBehaviour
     }
 
     // 4. マッチング成立時戦闘シーンへ遷移する
-    private void HandleMatchFound(NetworkPayload data)
+    private void HandleMatchFound(GameData data)
     {
         statusText.text = "matched!";
 
