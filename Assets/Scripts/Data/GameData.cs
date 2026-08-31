@@ -1,8 +1,7 @@
-using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "GameData", menuName = "Scriptable Objects/GameData")]
-public class GameData : ScriptableObject
+[Serializable]
+public class GameData
 {
     public string type = "game_state";
     public string room_id;

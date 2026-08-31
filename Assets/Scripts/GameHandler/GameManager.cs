@@ -12,12 +12,10 @@ public class BattleManager : MonoBehaviour
     [Header("自分 (Player)")]
     [SerializeField] private TextMeshProUGUI myHpText;
     [SerializeField] private TextMeshProUGUI myAtkText;
-    [SerializeField] private TextMeshProUGUI myHandText;
 
     [Header("相手 (Opponent)")]
     [SerializeField] private TextMeshProUGUI opponentHpText;
     [SerializeField] private TextMeshProUGUI opponentAtkText;
-    [SerializeField] private TextMeshProUGUI opponentHandText;
 
     [Header("バトル状態")]
     [SerializeField] private TextMeshProUGUI turnText;
@@ -100,7 +98,7 @@ public class BattleManager : MonoBehaviour
             // 相手のデータ反映
             opponentHpText.text = $"HP: {data.current_hp} / {data.max_hp}";
             opponentAtkText.text = $"ATK: {data.atk}";
-            opponentHandText.text = $"手札: {data.hand_count}枚";
+            Debug.Log($"手札: {data.hand_count}枚");
         }
 
         UpdateUI();
@@ -111,26 +109,28 @@ public class BattleManager : MonoBehaviour
         // 自分のUI更新
         myHpText.text = $"HP: {SyncData.sendData.current_hp} / {SyncData.sendData.max_hp}";
         myAtkText.text = $"ATK: {SyncData.sendData.atk}";
-        myHandText.text = $"手札: {SyncData.sendData.hand_count}枚";
+        Debug.Log($"手札: {SyncData.sendData.hand_count}枚");
 
         // ターン表示とボタンの活性/非活性
         if (IsMyTurn)
         {
-            turnText.text = "<color=green>あなたのターン</color>";
+            turnText.text = "<color=green>your turn</color>";
             for(int i = 0; i < cardButton.Count; i++)
             {
             cardButton[i].interactable = true;
             }
             endTurnButton.interactable = true;
+            attackButton.interactable = true;
         }
         else
         {
-            turnText.text = "<color=red>相手のターン</color>";
+            turnText.text = "<color=red>rival turn</color>";
             for(int i = 0; i < cardButton.Count; i++)
             {
             cardButton[i].interactable = false;
             }
             endTurnButton.interactable = false;
+            attackButton.interactable = false;
         }
     }
 
