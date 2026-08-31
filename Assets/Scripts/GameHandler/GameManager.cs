@@ -8,6 +8,7 @@ public class BattleManager : MonoBehaviour
 {
     public PlayerData playerData;
     public GameData gameData;
+    public TurnManager turnManager;
 
     [Header("自分 (Player)")]
     [SerializeField] private TextMeshProUGUI myHpText;
@@ -82,12 +83,18 @@ public class BattleManager : MonoBehaviour
     // サーバーからデータを受信したときの処理
     private void HandleBattleState(GameData data)
     {
-        // ターン更新
+        string lastTurnId = SyncData.sendData.current_turn_player_id;
         SyncData.sendData.current_turn_player_id = data.current_turn_player_id;
 
+        if (lastTurnId != data.current_turn_player_id && IsMyTurn)
+        {
+            turnManager.StartTurn();
+        }
+
+        // 2. データの反映
         if (data.player_id == playerData.player_id)
         {
-            // 自分のデータ反映
+            // 自分から送ったデータの確定反映
             SyncData.sendData.current_hp = data.current_hp;
             SyncData.sendData.max_hp = data.max_hp;
             SyncData.sendData.atk = data.atk;
@@ -95,10 +102,19 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            // 相手のデータ反映
+            // 相手のステータスをUIに反映
             opponentHpText.text = $"HP: {data.current_hp} / {data.max_hp}";
             opponentAtkText.text = $"ATK: {data.atk}";
-            Debug.Log($"手札: {data.hand_count}枚");
+
+            // ★相手から攻撃（attack）された場合、自分のHPを相手のATK分減らして同期し直す
+            if (data.action == "attack")
+            {
+                Debug.Log($"[Battle] 相手から {data.atk} の攻撃を受けました！");
+                SyncData.sendData.current_hp = Mathf.Max(0, SyncData.sendData.current_hp - data.atk);
+                
+                // 減少した自分の最新HPを相手に通知
+                SyncData.SyncMyState("take_damage");
+            }
         }
 
         UpdateUI();

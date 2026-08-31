@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class DrawCard : MonoBehaviour
+[Serializable]
+public class DrawCard
 {
     public GamePlayerData gamePlayerData;
     public int rnd;
@@ -26,7 +28,7 @@ public class DrawCard : MonoBehaviour
         gamePlayerData.game_deck.AddRange(gamePlayerData.trush);
         for (int i = gamePlayerData.game_deck.Count - 1; i > 0; i--)
         {
-        var j = Random.Range(0, i+1); 
+        var j = UnityEngine.Random.Range(0, i+1); 
         var temp = gamePlayerData.game_deck[i]; 
         gamePlayerData.game_deck[i] = gamePlayerData.game_deck[j]; 
         gamePlayerData.game_deck[j] = temp;

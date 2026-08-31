@@ -1331,6 +1331,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089c69638a402aa43abf9d820c7ff1b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  card:
+    drawCard:
+      gamePlayerData: {fileID: 0}
+      rnd: 0
+    gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
+    cardData:
+      card_id: 0
+      card_image: {fileID: 0}
+      is_attackable: 0
+      is_drawable: 0
+      is_selective_drawable: 0
+      pump_amount: 0
+      heal_amount: 0
+      draw_num: 0
+      select_num: 0
+    gameData:
+      type: game_state
+      room_id: 
+      player_id: 
+      current_turn_player_id: 
+      current_hp: 0
+      max_hp: 0
+      atk: 0
+      hand_count: 0
+      action: 
+    card_id: 0
 --- !u!4 &985209148
 Transform:
   m_ObjectHideFlags: 0
@@ -1372,7 +1398,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   playerData: {fileID: 11400000, guid: 8fd3eba3bbf3664498b23342a69bdf38, type: 2}
-  gameData: {fileID: 11400000, guid: ea061b0237e7b2544bd756aa279699b5, type: 2}
+  gameData:
+    type: 2
+    room_id: 
+    player_id: 
+    current_turn_player_id: 
+    current_hp: 0
+    max_hp: 0
+    atk: 0
+    hand_count: 0
+    action: 
+  turnManager: {fileID: 985209147}
   myHpText: {fileID: 1149509765}
   myAtkText: {fileID: 1557004122}
   opponentHpText: {fileID: 1423075944}

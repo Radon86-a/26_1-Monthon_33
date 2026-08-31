@@ -13,6 +13,7 @@ public struct CardData
 {
     [Header("カードの情報")]
     public int card_id;
+    public string card_name;
     public Sprite card_image;
 
     [Header("カードの性質")]
