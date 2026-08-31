@@ -1338,14 +1338,17 @@ MonoBehaviour:
     gamePlayerData: {fileID: 11400000, guid: 6134a188d815bd049bd5f33251e0f676, type: 2}
     cardData:
       card_id: 0
+      card_name: 
       card_image: {fileID: 0}
       is_attackable: 0
       is_drawable: 0
       is_selective_drawable: 0
+      is_hand_des: 0
       pump_amount: 0
       heal_amount: 0
       draw_num: 0
       select_num: 0
+      des_num: 0
     gameData:
       type: game_state
       room_id: 
@@ -1526,8 +1529,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 150}
+  m_SizeDelta: {x: 100, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1066537765
 CanvasRenderer:
@@ -1584,15 +1587,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1

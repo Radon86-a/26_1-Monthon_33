@@ -20,10 +20,13 @@ public struct CardData
     public bool is_attackable;
     public bool is_drawable;
     public bool is_selective_drawable;
+    public bool is_hand_des;
+    public bool is_equipment;
 
     [Header("カードの効果")]
     public int pump_amount;
     public int heal_amount;
     public int draw_num;
     public int select_num;
+    public int des_num;
 }

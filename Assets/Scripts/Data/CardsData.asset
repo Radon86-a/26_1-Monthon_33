@@ -12,4 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7754fdfe49aca46a6a5adb71ace9f3, type: 3}
   m_Name: CardsData
   m_EditorClassIdentifier: Assembly-CSharp::CardsData
-  cardsData: []
+  cardsData:
+  - card_id: 0
+    card_name: "\u63A8\u3057\u306E\u30B0\u30C3\u30BA"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_drawable: 0
+    is_selective_drawable: 0
+    is_hand_des: 0
+    is_equipment: 0
+    pump_amount: 0
+    heal_amount: 0
+    draw_num: 0
+    select_num: 0
+    des_num: 0

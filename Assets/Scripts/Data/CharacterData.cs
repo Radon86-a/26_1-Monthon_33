@@ -14,4 +14,5 @@ public struct Character
     public string character_name;
     public int character_hp;
     public int character_atk;
+    public List<int> character_card_num;
 }
