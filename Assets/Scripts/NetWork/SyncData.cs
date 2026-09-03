@@ -15,7 +15,8 @@ public class SyncData
             {
                 current_hp = sendData.my_current_hp,
                 atk = sendData.my_atk,
-                max_hp = sendData.my_max_hp
+                max_hp = sendData.my_max_hp,
+                hand_count = sendData.hand_count
             },
             opponent_data = new playerData
             {
