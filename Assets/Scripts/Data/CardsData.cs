@@ -12,7 +12,6 @@ public class CardsData : ScriptableObject
 public struct CardData
 {
     [Header("カードの情報")]
-    public int card_id;
     public string card_name;
     public Sprite card_image;
 
@@ -30,6 +29,8 @@ public struct CardData
     public int heal_amount;
     public int draw_num;
     public int select_num;
-    public int des_num;
-    public int damage_amount;
+    public int my_des_num;
+    public int opponent_des_num;
+    public int my_damage_amount;
+    public int opponent_damage_amount;
 }

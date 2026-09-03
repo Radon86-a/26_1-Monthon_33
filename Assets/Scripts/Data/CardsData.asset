@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: CardsData
   m_EditorClassIdentifier: Assembly-CSharp::CardsData
   cardsData:
-  - card_id: 0
-    card_name: "\u63A8\u3057\u306E\u30B0\u30C3\u30BA"
+  - card_name: "\u63A8\u3057\u306E\u30B0\u30C3\u30BA"
     card_image: {fileID: 0}
     is_attackable: 0
     is_healable: 1
@@ -27,5 +26,24 @@ MonoBehaviour:
     heal_amount: 20
     draw_num: 0
     select_num: 0
-    des_num: 0
-    damage_amount: 0
+    my_des_num: 0
+    opponent_des_num: 0
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u9032\u6357\u3069\u3046\u3067\u3059\u304B"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_healable: 0
+    is_damageable: 1
+    is_drawable: 0
+    is_selective_drawable: 0
+    is_hand_des: 1
+    is_equipment: 0
+    pump_amount: 0
+    heal_amount: 0
+    draw_num: 0
+    select_num: 0
+    my_des_num: 1
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 20
