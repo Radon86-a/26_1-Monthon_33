@@ -15,9 +15,18 @@ public class HomeManager : MonoBehaviour
 
     void Start()
     {
-        playerData.player_attacker = new Character();
-        playerData.player_supporter1 = new Character();
-        playerData.player_supporter2 = new Character();
+        playerData.player_attacker = new Character
+        {
+            character_id = -1
+        };
+        playerData.player_supporter1 = new Character
+        {
+            character_id = -1
+        };
+        playerData.player_supporter2 = new Character
+        {
+            character_id = -1
+        };
         is_matching = false;
         // イベント登録
         NetworkManager.Instance.OnWaiting += HandleWaiting;
@@ -54,18 +63,30 @@ public class HomeManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if(playerData.player_attacker.character_id == -1 ||
+        playerData.player_supporter1.character_id == -1 || 
+        playerData.player_supporter2.character_id == -1)
+        {
+            matchButton.interactable = false;
+        }
+        else
+        {
+            matchButton.interactable = true;
+        }
+    }
+
     private void OnMatchButtonClicked()
     {
         if(is_matching)
         {
-            is_matching = false;
             statusText.text = "cancelling...";
             NetworkManager.Instance.CancelMatching();
             return;
         }
         else
         {
-            is_matching = true;
             statusText.text = "data sending...";
             NetworkManager.Instance.StartMatching();
             return;
@@ -80,6 +101,10 @@ public class HomeManager : MonoBehaviour
     private void HandleWaiting(string msg)
     {
         statusText.text = "matching...";
+        is_matching = true;
+        attackerButton.interactable = false;
+        supporter1Button.interactable = false;
+        supporter2Button.interactable = false;
         if (matchButtonText != null) matchButtonText.text = "Cancel";
     }
 
@@ -88,6 +113,9 @@ public class HomeManager : MonoBehaviour
     {
         statusText.text = "canceled";
         is_matching = false;
+        attackerButton.interactable = true;
+        supporter1Button.interactable = true;
+        supporter2Button.interactable = true;
         if (matchButtonText != null) matchButtonText.text = "Buttle";
     }
 
