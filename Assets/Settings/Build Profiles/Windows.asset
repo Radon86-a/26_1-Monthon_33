@@ -31,9 +31,6 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/BattleScene.unity
     m_guid: 82df86e5c318fef4e82dbeb174b46d9d
-  - m_enabled: 1
-    m_path: Assets/Scenes/DeckMakeScene.unity
-    m_guid: f9814d2607ea2c74b98f4cb484562465
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:

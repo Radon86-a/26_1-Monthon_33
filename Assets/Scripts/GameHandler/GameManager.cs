@@ -42,9 +42,9 @@ public class BattleManager : MonoBehaviour
     attackButton.onClick.AddListener(OnAttackClicked);
 
     // 1. 自分の基本初期ステータスを sendData に格納
-    SyncData.sendData.current_hp = gameData.current_hp;
-    SyncData.sendData.max_hp = gameData.max_hp;
-    SyncData.sendData.atk = gameData.atk;
+    SyncData.sendData.my_current_hp = gameData.my_data.current_hp;
+    SyncData.sendData.my_max_hp = gameData.my_data.max_hp;
+    SyncData.sendData.my_atk = gameData.my_data.atk;
     SyncData.sendData.hand_count = 4; // 初期手札枚数など
     turnManager.GameStrat();
 
@@ -83,7 +83,7 @@ public class BattleManager : MonoBehaviour
     private void OnAttackClicked()
     {
         if (!IsMyTurn) return;
-        Attack.DoAttack(gameData.current_hp, gameData.atk);
+        Attack.DoAttack(gameData.opponent_data.current_hp, gameData.my_data.atk);
 
         SyncData.SyncMyState("attack");
     }
@@ -104,19 +104,19 @@ public class BattleManager : MonoBehaviour
     }
 
     // データ反映
-    if (data.player_id == playerData.player_id)
+    if (data.my_data.player_id == playerData.player_id)
     {
         // 自分の確定値
-        SyncData.sendData.current_hp = data.current_hp;
-        SyncData.sendData.max_hp = data.max_hp;
-        SyncData.sendData.atk = data.atk;
-        SyncData.sendData.hand_count = data.hand_count;
+        SyncData.sendData.my_current_hp = data.my_data.current_hp;
+        SyncData.sendData.my_max_hp = data.my_data.max_hp;
+        SyncData.sendData.my_atk = data.my_data.atk;
+        SyncData.sendData.hand_count = data.my_data.hand_count;
     }
     else
     {
         // ★相手の初期データ（init）や最新データが届いたら相手UIを更新
-        opponentHpText.text = $"HP: {data.current_hp} / {data.max_hp}";
-        opponentAtkText.text = $"ATK: {data.atk}";
+        opponentHpText.text = $"HP: {data.opponent_data.current_hp} / {data.opponent_data.max_hp}";
+        opponentAtkText.text = $"ATK: {data.opponent_data.atk}";
         // 相手の手札枚数UIなどがあればここで更新
     }
 
@@ -126,8 +126,8 @@ public class BattleManager : MonoBehaviour
     private void UpdateUI()
     {
         // 自分のUI更新
-        myHpText.text = $"HP: {SyncData.sendData.current_hp} / {SyncData.sendData.max_hp}";
-        myAtkText.text = $"ATK: {SyncData.sendData.atk}";
+        myHpText.text = $"HP: {SyncData.sendData.my_current_hp} / {SyncData.sendData.my_max_hp}";
+        myAtkText.text = $"ATK: {SyncData.sendData.my_atk}";
         Debug.Log($"手札: {SyncData.sendData.hand_count}枚");
 
         // ターン表示とボタンの活性/非活性
