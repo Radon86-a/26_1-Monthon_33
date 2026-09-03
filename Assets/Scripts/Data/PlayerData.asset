@@ -13,4 +13,28 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   player_name: 
+  player_id: 
   deck: []
+  player_attacker:
+    character_id: 0
+    character_name: 
+    character_hp: 0
+    character_atk: 0
+    attacker_card:
+    - card_id: 0
+      card_num: 0
+    supporter_card: []
+  player_supporter1:
+    character_id: 0
+    character_name: 
+    character_hp: 0
+    character_atk: 0
+    attacker_card: []
+    supporter_card: []
+  player_supporter2:
+    character_id: 0
+    character_name: 
+    character_hp: 0
+    character_atk: 0
+    attacker_card: []
+    supporter_card: []
