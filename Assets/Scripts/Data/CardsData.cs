@@ -22,7 +22,6 @@ public struct CardData
     public bool is_drawable;
     public bool is_selective_drawable;
     public bool is_hand_des;
-    public bool is_equipment;
 
     [Header("カードの効果")]
     public int pump_amount;

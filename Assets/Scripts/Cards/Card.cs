@@ -72,12 +72,12 @@ public class Card : MonoBehaviour
         if(cardData.cardsData[card_id].is_damageable)
         {}
         if(cardData.cardsData[card_id].is_drawable)
-        {}
+        {
+            DrawToHund(cardData.cardsData[card_id].draw_num);
+        }
         if(cardData.cardsData[card_id].is_selective_drawable)
         {}
         if(cardData.cardsData[card_id].is_hand_des)
-        {}
-        if(cardData.cardsData[card_id].is_equipment)
         {}
     }
 
@@ -118,5 +118,10 @@ public class Card : MonoBehaviour
         {
             return 0;
         }
+    }
+
+    public void HundDes(int des_num)
+    {
+        //手を捨てさせるためのコードを書く
     }
 }
