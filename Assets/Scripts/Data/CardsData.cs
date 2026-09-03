@@ -18,6 +18,8 @@ public struct CardData
 
     [Header("カードの性質")]
     public bool is_attackable;
+    public bool is_healable;
+    public bool is_damageable;
     public bool is_drawable;
     public bool is_selective_drawable;
     public bool is_hand_des;
@@ -29,4 +31,5 @@ public struct CardData
     public int draw_num;
     public int select_num;
     public int des_num;
+    public int damage_amount;
 }

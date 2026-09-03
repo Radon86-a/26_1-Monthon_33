@@ -98,7 +98,7 @@ public class NetworkManager : MonoBehaviour
         switch (data.type)
     {
         case "connected":
-            playerData.player_id = data.player_id;
+            playerData.player_id = data.my_data.player_id;
             Debug.Log($"<color=cyan>[Connected]</color> Player ID: {playerData.player_id}");
             OnConnected?.Invoke();
             break;
@@ -153,7 +153,7 @@ public class NetworkManager : MonoBehaviour
         if (websocket != null && websocket.State == NativeWebSocket.WebSocketState.Open)
         {
             data.room_id = RoomId;
-            data.player_id = playerData.player_id;
+            data.my_data.player_id = playerData.player_id;
             string json = JsonUtility.ToJson(data);
             await websocket.SendText(json);
         }

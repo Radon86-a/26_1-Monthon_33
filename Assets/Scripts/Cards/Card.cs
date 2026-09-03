@@ -1,28 +1,83 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using System;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Unity.VisualScripting;
 
-[Serializable]
-public class Card
+[RequireComponent(typeof(RectTransform))]
+[RequireComponent(typeof(Button))]
+public class Card : MonoBehaviour
 {
+    [SerializeField] private Button button;
+    [SerializeField] private Sprite button_image;
+    [SerializeField] private TextMeshPro idText;
     public DrawCard drawCard;
     public GamePlayerData gamePlayerData;
-    public CardData cardData;
+    public CardsData cardData;
     public GameData gameData;
     public int card_id;
+    public RectTransform RectTransform { get; private set; }
+
+    public int CardId { get; private set; }
+
+    private void Awake()
+    {
+        RectTransform = GetComponent<RectTransform>();
+        if (button == null) button = GetComponent<Button>();
+    }
+    /// <summary>
+    /// カードの初期設定
+    /// </summary>
+    /// <param name="id">カードID</param>
+    /// <param name="onClickCallback">クリックされたときに呼ばれる処理</param>
+    public void Setup(int card_id, Action<int> onClickCallback = null)
+    {
+        name = $"Card_{CardId}";
+
+        // UI表示の更新
+        if (idText != null)
+        {
+            idText.text = CardId.ToString();
+        }
+
+        if(cardData.cardsData[card_id].card_image != null)
+        {
+            button_image = cardData.cardsData[card_id].card_image;
+        }
+
+        // ボタンのクリックイベントを登録
+        button.onClick.RemoveAllListeners();
+        if (onClickCallback != null)
+        {
+            button.onClick.AddListener(() => onClickCallback(CardId));
+        }
+    }
 
     public void UseCard(int card_id)
     {
 
-        if(cardData.is_attackable)
+        if(cardData.cardsData[card_id].is_attackable)
         {
-            Attack.DoAttack(gameData.current_hp, gameData.atk);
+            Attack.DoAttack(gameData.opponent_data.current_hp, gameData.my_data.atk);
 
             SyncData.SyncMyState("attack");
         }
-        if(cardData.is_drawable)
+        if(cardData.cardsData[card_id].is_healable)
+        {
+            Heal(cardData.cardsData[card_id].heal_amount, gameData.my_data.current_hp, gameData.my_data.max_hp);
+            
+            SyncData.SyncMyState("heal");
+        }
+        if(cardData.cardsData[card_id].is_damageable)
         {}
-        if(cardData.is_selective_drawable)
+        if(cardData.cardsData[card_id].is_drawable)
+        {}
+        if(cardData.cardsData[card_id].is_selective_drawable)
+        {}
+        if(cardData.cardsData[card_id].is_hand_des)
+        {}
+        if(cardData.cardsData[card_id].is_equipment)
         {}
     }
 
