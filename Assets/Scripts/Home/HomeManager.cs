@@ -8,10 +8,12 @@ public class HomeManager : MonoBehaviour
     [SerializeField] private Button attackerButton;
     [SerializeField] private Button supporter1Button;
     [SerializeField] private Button supporter2Button;
+    [SerializeField] private Button shadowButton;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI matchButtonText;
     public PlayerData playerData;
     private bool is_matching;
+    private int selected_button_id;
 
     void Start()
     {
@@ -49,6 +51,12 @@ public class HomeManager : MonoBehaviour
         {
             supporter2Button.onClick.AddListener(() => OnCharacterButtonClicked(2));
         }
+        if (shadowButton != null)
+        {
+            shadowButton.onClick.AddListener(OnShadowButtonClicked);
+        }
+
+        shadowButton.gameObject.SetActive(false);
 
         // ★未接続ならサーバーに接続する
         if (!NetworkManager.Instance.IsConnected)
@@ -95,7 +103,15 @@ public class HomeManager : MonoBehaviour
     }
 
     public void OnCharacterButtonClicked(int i)
-    {}
+    {
+        shadowButton.gameObject.SetActive(true);
+        selected_button_id = i;
+    }
+
+    public void OnShadowButtonClicked()
+    {
+        shadowButton.gameObject.SetActive(false);
+    }
 
     // サーバーから待機中通知を受信
     private void HandleWaiting(string msg)

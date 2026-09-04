@@ -12,6 +12,7 @@ public struct Character
 {
     public int character_id;
     public string character_name;
+    public Sprite character_image;
     public int character_hp;
     public int character_atk;
     public List<CharacterCard> attacker_card;

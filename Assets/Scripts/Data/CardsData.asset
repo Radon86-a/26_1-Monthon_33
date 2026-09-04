@@ -16,16 +16,19 @@ MonoBehaviour:
   - card_name: "\u63A8\u3057\u306E\u30B0\u30C3\u30BA"
     card_image: {fileID: 0}
     is_attackable: 0
+    is_pumpable: 0
     is_healable: 1
     is_damageable: 0
     is_drawable: 0
     is_selective_drawable: 0
     is_hand_des: 0
-    is_equipment: 0
     pump_amount: 0
-    heal_amount: 20
-    draw_num: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 0
+    opponent_draw_num: 0
     select_num: 0
+    selectable_card_id: 0
     my_des_num: 0
     opponent_des_num: 0
     my_damage_amount: 0
@@ -33,17 +36,220 @@ MonoBehaviour:
   - card_name: "\u9032\u6357\u3069\u3046\u3067\u3059\u304B"
     card_image: {fileID: 0}
     is_attackable: 0
+    is_pumpable: 0
     is_healable: 0
     is_damageable: 1
     is_drawable: 0
     is_selective_drawable: 0
     is_hand_des: 1
-    is_equipment: 0
     pump_amount: 0
-    heal_amount: 0
-    draw_num: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 0
+    opponent_draw_num: 0
     select_num: 0
+    selectable_card_id: 0
     my_des_num: 1
     opponent_des_num: 1
     my_damage_amount: 0
     opponent_damage_amount: 20
+  - card_name: "\u6148\u611B\u306E\u7CBE\u795E"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 1
+    is_damageable: 0
+    is_drawable: 0
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 30
+    my_draw_num: 0
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 2
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u5BB6\u4E8B\u80B2\u5150"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 1
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 0
+    pump_amount: 40
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 0
+    opponent_draw_num: 1
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 0
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u307D\u3066\u3068\uFF01"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 1
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 0
+    pump_amount: 0
+    my_heal_amount: 20
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 0
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u8D85\u7D76\u504F\u98DF\u5BB6"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u8D85\u30FB\u63A8\u3057\u611B"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 1
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 0
+    is_selective_drawable: 0
+    is_hand_des: 0
+    pump_amount: 20
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 0
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 0
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u30DE\u30ED\u52DF\u96C6"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 3
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 1
+    opponent_des_num: 0
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u60B2\u3057\u304D\u30CD\u30C3\u30C8\u30EA\u30C6\u30E9\u30B7\u30FC"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u30B0\u30C3\u30BA\u30B3\u30EC\u30AF\u30BF\u30FC"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u5909\u614B\u5EA6\u30C1\u30A7\u30C3\u30AF"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 0
+  - card_name: "\u5BB6\u51FA"
+    card_image: {fileID: 0}
+    is_attackable: 0
+    is_pumpable: 0
+    is_healable: 0
+    is_damageable: 0
+    is_drawable: 1
+    is_selective_drawable: 0
+    is_hand_des: 1
+    pump_amount: 0
+    my_heal_amount: 0
+    opponent_heal_amount: 0
+    my_draw_num: 1
+    opponent_draw_num: 0
+    select_num: 0
+    selectable_card_id: 0
+    my_des_num: 0
+    opponent_des_num: 1
+    my_damage_amount: 0
+    opponent_damage_amount: 0
