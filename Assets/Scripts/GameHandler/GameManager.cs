@@ -9,6 +9,8 @@ public class BattleManager : MonoBehaviour
     public PlayerData playerData;
     public GameData gameData;
     public TurnManager turnManager;
+    public GamePlayerData gamePlayerData;
+    public CharacterData characterData;
 
     [Header("自分 (Player)")]
     [SerializeField] private TextMeshProUGUI myHpText;
@@ -26,10 +28,14 @@ public class BattleManager : MonoBehaviour
 
     // 自分のキャラステータス
     
-    private bool IsMyTurn => SyncData.sendData.current_turn_player_id == playerData.player_id;
+    private bool IsMyTurn => 
+    !string.IsNullOrEmpty(SyncData.sendData.current_turn_player_id) && 
+    !string.IsNullOrEmpty(playerData.player_id) &&
+    SyncData.sendData.current_turn_player_id == playerData.player_id;
 
     void Start()
 {
+    InitializeGame.Initialize(gamePlayerData, playerData, gameData, characterData);
     NetworkManager.Instance.OnBattleStateReceived += HandleBattleState;
 
     // ボタンのリスナー設定
@@ -41,20 +47,26 @@ public class BattleManager : MonoBehaviour
     endTurnButton.onClick.AddListener(OnEndTurnClicked);
     attackButton.onClick.AddListener(OnAttackClicked);
 
-    // 1. 自分の基本初期ステータスを sendData に格納
+    // 自分の初期ステータスを格納
     SyncData.sendData.my_current_hp = gameData.my_data.current_hp;
     SyncData.sendData.my_max_hp = gameData.my_data.max_hp;
     SyncData.sendData.my_atk = gameData.my_data.atk;
-    SyncData.sendData.hand_count = 4; // 初期手札枚数など
-    turnManager.GameStrat();
+    SyncData.sendData.hand_count = 4;
 
-    // 2. 先行プレイヤーのみ初期ターン保持者を自分に設定する（後攻は相手のIDが入るのを待つ）
+    // ★ターン管理の初期化
     if (NetworkManager.Instance.IsFirstPlayer)
     {
+        // 先行：自分が最初のターン
         SyncData.sendData.current_turn_player_id = playerData.player_id;
+        turnManager.GameStrat(); // 先行側のみゲーム開始処理を実行
+    }
+    else
+    {
+        // 後攻：相手（先行側）のIDを初期ターン保持者にする
+        SyncData.sendData.current_turn_player_id = NetworkManager.Instance.OpponentId;
     }
 
-    // 3. ★先行・後攻問わず、自分の初期ステータスを相手に送信する
+    // 初期ステータスを同期送信
     SyncData.SyncMyState("init");
 
     UpdateUI();
@@ -90,53 +102,51 @@ public class BattleManager : MonoBehaviour
 
     // サーバーからデータを受信したときの処理
     private void HandleBattleState(GameData data)
-{
-    // ターン更新（先行が送信した init、またはターン終了時のデータから反映）
-    if (!string.IsNullOrEmpty(data.current_turn_player_id))
     {
-        string lastTurnId = SyncData.sendData.current_turn_player_id;
-        SyncData.sendData.current_turn_player_id = data.current_turn_player_id;
-
-        if (lastTurnId != data.current_turn_player_id && IsMyTurn)
+        // 1. ターンの更新と開始トリガーの検知
+        if (!string.IsNullOrEmpty(data.current_turn_player_id))
         {
-            turnManager.StartTurn();
-        }
-    }
+            string lastTurnId = SyncData.sendData.current_turn_player_id;
+            SyncData.sendData.current_turn_player_id = data.current_turn_player_id;
 
-    // データ反映
-    if (data.my_data.player_id == playerData.player_id)
-    {
-        // 自分の確定値
+            // 相手からターンが渡ってきた瞬間のみ開始処理
+            if (lastTurnId != data.current_turn_player_id && IsMyTurn)
+            {
+                turnManager.StartTurn();
+            }
+        }
+
+        // 2. サーバー側で反転済みのため、常に my_data が自分、opponent_data が相手
         SyncData.sendData.my_current_hp = data.my_data.current_hp;
         SyncData.sendData.my_max_hp = data.my_data.max_hp;
         SyncData.sendData.my_atk = data.my_data.atk;
         SyncData.sendData.hand_count = data.my_data.hand_count;
-    }
-    else
-    {
-        // ★相手の初期データ（init）や最新データが届いたら相手UIを更新
-        opponentHpText.text = $"HP: {data.opponent_data.current_hp} / {data.opponent_data.max_hp}";
-        opponentAtkText.text = $"ATK: {data.opponent_data.atk}";
-        // 相手の手札枚数UIなどがあればここで更新
-    }
 
-    UpdateUI();
-}
+        SyncData.sendData.opponent_current_hp = data.opponent_data.current_hp;
+        SyncData.sendData.opponent_max_hp = data.opponent_data.max_hp;
+        SyncData.sendData.opponent_atk = data.opponent_data.atk;
+
+        // UIの全体更新
+        UpdateUI();
+    }
 
     private void UpdateUI()
     {
         // 自分のUI更新
         myHpText.text = $"HP: {SyncData.sendData.my_current_hp} / {SyncData.sendData.my_max_hp}";
         myAtkText.text = $"ATK: {SyncData.sendData.my_atk}";
-        Debug.Log($"手札: {SyncData.sendData.hand_count}枚");
+
+        // 相手のUI更新（★ここで確実に画面へ反映）
+        opponentHpText.text = $"HP: {SyncData.sendData.opponent_current_hp} / {SyncData.sendData.opponent_max_hp}";
+        opponentAtkText.text = $"ATK: {SyncData.sendData.opponent_atk}";
 
         // ターン表示とボタンの活性/非活性
         if (IsMyTurn)
         {
             turnText.text = "<color=green>your turn</color>";
-            for(int i = 0; i < cardButton.Count; i++)
+            for (int i = 0; i < cardButton.Count; i++)
             {
-            cardButton[i].interactable = true;
+                cardButton[i].interactable = true;
             }
             endTurnButton.interactable = true;
             attackButton.interactable = true;
@@ -144,9 +154,9 @@ public class BattleManager : MonoBehaviour
         else
         {
             turnText.text = "<color=red>rival turn</color>";
-            for(int i = 0; i < cardButton.Count; i++)
+            for (int i = 0; i < cardButton.Count; i++)
             {
-            cardButton[i].interactable = false;
+                cardButton[i].interactable = false;
             }
             endTurnButton.interactable = false;
             attackButton.interactable = false;

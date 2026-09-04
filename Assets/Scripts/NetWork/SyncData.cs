@@ -1,5 +1,3 @@
-using System;
-
 public class SyncData
 {
     public static SendData sendData;
@@ -13,6 +11,7 @@ public class SyncData
             current_turn_player_id = sendData.current_turn_player_id,
             my_data = new playerData
             {
+                player_id = NetworkManager.Instance.playerData.player_id,
                 current_hp = sendData.my_current_hp,
                 atk = sendData.my_atk,
                 max_hp = sendData.my_max_hp,

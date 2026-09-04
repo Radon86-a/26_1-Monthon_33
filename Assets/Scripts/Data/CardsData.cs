@@ -17,6 +17,7 @@ public struct CardData
 
     [Header("カードの性質")]
     public bool is_attackable;
+    public bool is_pumpable;
     public bool is_healable;
     public bool is_damageable;
     public bool is_drawable;
@@ -25,9 +26,12 @@ public struct CardData
 
     [Header("カードの効果")]
     public int pump_amount;
-    public int heal_amount;
-    public int draw_num;
+    public int my_heal_amount;
+    public int opponent_heal_amount;
+    public int my_draw_num;
+    public int opponent_draw_num;
     public int select_num;
+    public int selectable_card_id;
     public int my_des_num;
     public int opponent_des_num;
     public int my_damage_amount;

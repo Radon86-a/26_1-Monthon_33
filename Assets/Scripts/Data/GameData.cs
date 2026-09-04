@@ -1,11 +1,12 @@
 using System;
 
-// バックエンドに送る用のデータ
 [Serializable]
 public class GameData
 {
     public string type;
     public string room_id;
+    public string player_id;     // ★追加: connected や match_found 時のID受け取り用
+    public string opponent_id;   // ★追加: match_found 時に相手IDを受け取る用
     public string current_turn_player_id;
     public string action;
     public bool is_first;

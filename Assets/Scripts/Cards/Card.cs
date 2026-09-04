@@ -63,9 +63,12 @@ public class Card : MonoBehaviour
 
             SyncData.SyncMyState("attack");
         }
+        if(cardData.cardsData[card_id].is_pumpable)
+        {}
         if(cardData.cardsData[card_id].is_healable)
         {
-            Heal(cardData.cardsData[card_id].heal_amount, gameData.my_data.current_hp, gameData.my_data.max_hp);
+            Heal(cardData.cardsData[card_id].my_heal_amount, gameData.my_data.current_hp, gameData.my_data.max_hp);
+            Heal(cardData.cardsData[card_id].opponent_heal_amount, gameData.opponent_data.current_hp, gameData.opponent_data.max_hp);
             
             SyncData.SyncMyState("heal");
         }
@@ -73,7 +76,7 @@ public class Card : MonoBehaviour
         {}
         if(cardData.cardsData[card_id].is_drawable)
         {
-            DrawToHund(cardData.cardsData[card_id].draw_num);
+            DrawToHund(cardData.cardsData[card_id].my_draw_num);
         }
         if(cardData.cardsData[card_id].is_selective_drawable)
         {}
