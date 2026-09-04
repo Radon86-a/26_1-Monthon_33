@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 
 public class HomeManager : MonoBehaviour
 {
@@ -9,14 +11,18 @@ public class HomeManager : MonoBehaviour
     [SerializeField] private Button supporter1Button;
     [SerializeField] private Button supporter2Button;
     [SerializeField] private Button shadowButton;
+    [SerializeField] private Button[] characterButtons;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI matchButtonText;
     public PlayerData playerData;
+    public CharacterData characterData;
+    public CardsData cardsData;
     private bool is_matching;
     private int selected_button_id;
 
     void Start()
     {
+        playerData.deck = new List<GameCardData>();
         playerData.player_attacker = new Character
         {
             character_id = -1
@@ -54,6 +60,14 @@ public class HomeManager : MonoBehaviour
         if (shadowButton != null)
         {
             shadowButton.onClick.AddListener(OnShadowButtonClicked);
+        }
+        for(int i = 0;i < characterButtons.Length; i++)
+        {
+            if (characterButtons[i] != null)
+        {
+            int index = i;
+            characterButtons[i].onClick.AddListener(() => OnCharacterButtonsClicked(index));
+        }
         }
 
         shadowButton.gameObject.SetActive(false);
@@ -111,6 +125,78 @@ public class HomeManager : MonoBehaviour
     public void OnShadowButtonClicked()
     {
         shadowButton.gameObject.SetActive(false);
+    }
+    public void OnCharacterButtonsClicked(int chara_num)
+    {
+        playerData.deck = new List<GameCardData>();
+        switch (selected_button_id)
+        {
+            case 0:
+            playerData.player_attacker = characterData.characters[chara_num];
+            MakeDeckList();
+            break;
+            case 1:
+            playerData.player_supporter1 = characterData.characters[chara_num];
+            MakeDeckList();
+            break;
+            case 2:
+            playerData.player_supporter2 = characterData.characters[chara_num];
+            MakeDeckList();
+            break;
+            default:
+            Debug.Log("未知のIDです");
+            break;
+        }
+        shadowButton.gameObject.SetActive(false);
+    }
+
+    public void MakeDeckList()
+    {
+        if(playerData.player_attacker.character_id >= 0)
+        {
+            int attacker = playerData.player_attacker.attacker_card.Count;
+        for(int i = 0; i < attacker; i++)
+        {
+            for(int j = 0; j < playerData.player_attacker.attacker_card[i].card_num; j++)
+            {
+                playerData.deck.Add(new GameCardData
+                {
+                    card_id = playerData.player_attacker.attacker_card[i].card_id
+                });
+            }
+        }
+        }
+
+        if(playerData.player_supporter1.character_id >= 0)
+        {
+            int supporter1 = playerData.player_supporter1.supporter_card.Count;
+        for(int i = 0; i < supporter1; i++)
+        {
+            for(int j = 0; j < playerData.player_supporter1.supporter_card[i].card_num; j++)
+            {
+                playerData.deck.Add(new GameCardData
+                {
+                    card_id = playerData.player_supporter1.supporter_card[i].card_id
+                });
+            }
+        }
+        }
+        
+        if(playerData.player_supporter2.character_id >= 0)
+        {
+            int supporter2 = playerData.player_supporter2.supporter_card.Count;
+        for(int i = 0; i < supporter2; i++)
+        {
+            for(int j = 0; j < playerData.player_supporter2.supporter_card[i].card_num; j++)
+            {
+                playerData.deck.Add(new GameCardData
+                {
+                    card_id = playerData.player_supporter2.supporter_card[i].card_id
+                });
+            }
+        }
+        }
+        
     }
 
     // サーバーから待機中通知を受信

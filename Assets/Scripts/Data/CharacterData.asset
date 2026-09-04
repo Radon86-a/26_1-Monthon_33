@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characters:
   - character_id: 0
-    character_name: "\u3089\u3069\u3093"
+    character_name: Radon
     character_image: {fileID: 0}
     character_hp: 180
     character_atk: 10
@@ -38,7 +38,7 @@ MonoBehaviour:
       card_num: 4
     - card_id: 5
       card_num: 4
-  - character_id: 0
+  - character_id: 1
     character_name: Ruby
     character_image: {fileID: 0}
     character_hp: 100
@@ -46,9 +46,25 @@ MonoBehaviour:
     attacker_card:
     - card_id: 0
       card_num: 4
-    supporter_card: []
-  - character_id: 0
-    character_name: "\u7AF9\u6563\u308B"
+    - card_id: 6
+      card_num: 4
+    - card_id: 7
+      card_num: 4
+    - card_id: 8
+      card_num: 2
+    - card_id: 9
+      card_num: 4
+    - card_id: 10
+      card_num: 2
+    supporter_card:
+    - card_id: 0
+      card_num: 4
+    - card_id: 7
+      card_num: 2
+    - card_id: 8
+      card_num: 4
+  - character_id: 2
+    character_name: TakeTiru
     character_image: {fileID: 0}
     character_hp: 150
     character_atk: 20

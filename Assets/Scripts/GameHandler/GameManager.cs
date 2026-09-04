@@ -9,6 +9,8 @@ public class BattleManager : MonoBehaviour
     public PlayerData playerData;
     public GameData gameData;
     public TurnManager turnManager;
+    public GamePlayerData gamePlayerData;
+    public CharacterData characterData;
 
     [Header("自分 (Player)")]
     [SerializeField] private TextMeshProUGUI myHpText;
@@ -30,6 +32,7 @@ public class BattleManager : MonoBehaviour
 
     void Start()
 {
+    InitializeGame.Initialize(gamePlayerData, playerData, gameData, characterData);
     NetworkManager.Instance.OnBattleStateReceived += HandleBattleState;
 
     // ボタンのリスナー設定
