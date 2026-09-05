@@ -2,30 +2,25 @@ public class SyncData
 {
     public static SendData sendData;
 
-    // 自分の状態をバックエンドへ送信
     public static void SyncMyState(string actionType)
     {
         GameData data = new GameData
         {
-            type = "game_state", 
+            type = "game_state",
+            player_id = NetworkManager.Instance.playerData.player_id,
             current_turn_player_id = sendData.current_turn_player_id,
+            action = actionType,
+            des_num = sendData.des_num,
+            heal_amount = sendData.heal_amount,
             my_data = new playerData
             {
                 player_id = NetworkManager.Instance.playerData.player_id,
                 current_hp = sendData.my_current_hp,
-                atk = sendData.my_atk,
                 max_hp = sendData.my_max_hp,
+                atk = sendData.my_atk,
                 hand_count = sendData.hand_count
-            },
-            opponent_data = new playerData
-            {
-                current_hp = sendData.opponent_current_hp,
-                atk = sendData.opponent_atk,
-                max_hp = sendData.opponent_max_hp
-            },
-            action = actionType,
-            des_num = sendData.des_num,
-            heal_amount = sendData.heal_amount
+            }
+            // opponent_data は相手自身が送ってくるのでここでは空でOK
         };
 
         NetworkManager.Instance.SendBattleState(data);
